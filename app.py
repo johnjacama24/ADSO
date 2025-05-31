@@ -5,13 +5,13 @@ import pickle
 # Cargar modelo
 @st.cache_resource
 def cargar_modelo():
-    with open("best_model (18).pkl", "rb") as file:
+    with open("best_model (17).pkl", "rb") as file:
         return pickle.load(file)
 
 modelo = cargar_modelo()
 
 # Cargar DataFrame de ejemplo
-df = pd.read_excel("dataframe_exportado (12).xlsx")
+df = pd.read_excel("dataframe_exportado.xlsx")
 
 # Obtener columnas y calcular valores promedio
 columnas = df.drop("Estado Aprendiz", axis=1).columns
