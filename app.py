@@ -7,7 +7,7 @@ import pickle
 # ----------------------------
 @st.cache_resource
 def cargar_modelo():
-    with open("best_model (17).pkl", "rb") as file:
+    with open("best_model.pkl", "rb") as file:
         return pickle.load(file)
 
 modelo = cargar_modelo()
@@ -15,7 +15,7 @@ modelo = cargar_modelo()
 # ----------------------------
 # Cargar el dataframe original
 # ----------------------------
-df = pd.read_excel("dataframe_exportado.xlsx", engine="openpyxl")
+df = pd.read_excel("dataframe.xlsx", engine="openpyxl")
 
 # ----------------------------
 # Configuración de la app
