@@ -5,7 +5,7 @@ import pickle
 # ----------------------------
 # Cargar el modelo .pkl
 # ----------------------------
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def cargar_modelo():
     with open("best_model (17).pkl", "rb") as file:
         return pickle.load(file)
