@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as st 
 import pandas as pd
 import pickle
 
@@ -28,32 +28,29 @@ edad = st.slider("Edad", 18, 100, 25)
 cantidad_quejas = st.selectbox("Cantidad de quejas", list(range(0, 11)))
 estrato = st.selectbox("Estrato socioeconómico", [1, 2, 3, 4, 5, 6])
 
-# ----------------------------
-# Preparar entrada para el modelo
-# ----------------------------
+# Botón para ejecutar la predicción
+if st.button("Realizar predicción"):
+    try:
+        # Obtener nombres y orden de columnas como las espera el modelo
+        columnas_modelo = df.drop("Estado Aprendiz", axis=1).columns
 
-# Obtener nombres y orden de columnas como las espera el modelo
-columnas_modelo = df.drop("Estado Aprendiz", axis=1).columns
+        # Crear muestra con valores promedio
+        valores_default = df.drop("Estado Aprendiz", axis=1).mean()
+        nueva_muestra = valores_default.copy()
 
-# Crear muestra con valores promedio
-valores_default = df.drop("Estado Aprendiz", axis=1).mean()
-nueva_muestra = valores_default.copy()
+        # Reemplazar los valores ingresados
+        nueva_muestra["Edad"] = edad
+        nueva_muestra["Cantidad de quejas"] = cantidad_quejas
+        nueva_muestra["Estrato"] = estrato
 
-# Reemplazar los valores ingresados
-nueva_muestra["Edad"] = edad
-nueva_muestra["Cantidad de quejas"] = cantidad_quejas
-nueva_muestra["Estrato"] = estrato
+        # Convertir en DataFrame con columnas en el orden original
+        entrada_modelo = pd.DataFrame([nueva_muestra])[columnas_modelo]
 
-# Convertir en DataFrame con columnas en el orden original
-entrada_modelo = pd.DataFrame([nueva_muestra])[columnas_modelo]
+        # Realizar la predicción
+        prediccion = modelo.predict(entrada_modelo)[0]
+        st.subheader("Resultado de la predicción:")
+        st.success(f"📊 Estado del aprendiz predicho: **{prediccion}**")
+    except Exception as e:
+        st.error("❌ Error al hacer la predicción:")
+        st.code(str(e))
 
-# ----------------------------
-# Realizar la predicción
-# ----------------------------
-try:
-    prediccion = modelo.predict(entrada_modelo)[0]
-    st.subheader("Resultado de la predicción:")
-    st.success(f"📊 Estado del aprendiz predicho: **{prediccion}**")
-except Exception as e:
-    st.error("❌ Error al hacer la predicción:")
-    st.code(str(e))
