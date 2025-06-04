@@ -57,6 +57,7 @@ if st.button("Realizar predicción"):
         def normalizar_columnas(columnas):
             return columnas.str.replace(r'\s+', ' ', regex=True)\
                    .str.replace(',', '', regex=False)\
+                   .str.replace('\.$', '', regex=True)\
                    .str.replace('.', '', regex=False)\
                    .str.strip()
 
