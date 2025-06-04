@@ -18,6 +18,12 @@ modelo, diccionario_inverso = cargar_modelo_y_diccionario()
 # ----------------------------
 df = pd.read_excel("dataframe.xlsx", engine="openpyxl")
 
+# Limpieza de nombres de columnas
+# ----------------------------
+df.columns = df.columns.str.replace(',', '', regex=False)\
+                       .str.replace('.', '', regex=False)\
+                       .str.replace('  ', ' ', regex=False)\
+                       .str.strip()
 # ----------------------------
 # Configuración de la app
 # ----------------------------
