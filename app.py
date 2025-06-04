@@ -65,7 +65,7 @@ if st.button("Realizar predicción"):
         columnas_modelo = normalizar_columnas(columnas_modelo)
 
          # Reordenar columnas
-         entrada_modelo = entrada_modelo[columnas_modelo]
+        entrada_modelo = entrada_modelo[columnas_modelo]
 
         # Asegurar que el orden y los nombres coincidan
         entrada_modelo = entrada_modelo[columnas_modelo]
