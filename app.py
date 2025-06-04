@@ -54,12 +54,18 @@ if st.button("Realizar predicción"):
         entrada_modelo = pd.DataFrame([nueva_muestra])[columnas_modelo]
 
         # Limpieza de nombres de columnas
-        entrada_modelo.columns = entrada_modelo.columns.str.replace(',', '', regex=False)\
-                                                       .str.replace('.', '', regex=False)\
-                                                       .str.strip()
-        columnas_modelo = columnas_modelo.str.replace(',', '', regex=False)\
-                                         .str.replace('.', '', regex=False)\
-                                         .str.strip()
+        def normalizar_columnas(columnas):
+    return columnas.str.replace(r'\s+', ' ', regex=True)\
+                   .str.replace(',', '', regex=False)\
+                   .str.replace('.', '', regex=False)\
+                   .str.strip()
+
+# Aplicar limpieza robusta
+entrada_modelo.columns = normalizar_columnas(entrada_modelo.columns)
+columnas_modelo = normalizar_columnas(columnas_modelo)
+
+# Reordenar columnas
+entrada_modelo = entrada_modelo[columnas_modelo]
 
         # Asegurar que el orden y los nombres coincidan
         entrada_modelo = entrada_modelo[columnas_modelo]
