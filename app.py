@@ -9,7 +9,7 @@ import pickle
 def cargar_modelo_y_diccionario():
     with open("best_model.pkl", "rb") as file:
         data = pickle.load(file)
-        return data["modelo"], data["diccionario_inverso"]
+        return data["modelo"], data["label_encoder_mapping"]
 
 modelo, diccionario_inverso = cargar_modelo_y_diccionario()
 
