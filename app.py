@@ -3,14 +3,15 @@ import pandas as pd
 import pickle
 
 # ----------------------------
-# Cargar el modelo .pkl
+# Cargar el modelo y diccionario del .pkl
 # ----------------------------
 @st.cache_resource
-def cargar_modelo():
+def cargar_modelo_y_diccionario():
     with open("best_model.pkl", "rb") as file:
-        return pickle.load(file)
+        data = pickle.load(file)
+        return data["modelo"], data["diccionario_inverso"]
 
-modelo = cargar_modelo()
+modelo, diccionario_inverso = cargar_modelo_y_diccionario()
 
 # ----------------------------
 # Cargar el dataframe original
@@ -47,10 +48,21 @@ if st.button("Realizar predicción"):
         entrada_modelo = pd.DataFrame([nueva_muestra])[columnas_modelo]
 
         # Realizar la predicción
-        prediccion = modelo.predict(entrada_modelo)[0]
+        prediccion_codificada = modelo.predict(entrada_modelo)[0]
+        prediccion_original = diccionario_inverso.get(prediccion_codificada, f"Desconocido ({prediccion_codificada})")
+
+        # Mostrar resultado
         st.subheader("Resultado de la predicción:")
-        st.success(f"📊 Estado del aprendiz predicho: **{prediccion}**")
+        st.success(f"📊 Estado del aprendiz predicho: **{prediccion_original}**")
+
+        # Mostrar entradas originales
+        st.subheader("Valores utilizados para la predicción:")
+        st.write({
+            "Edad": edad,
+            "Cantidad de quejas": cantidad_quejas,
+            "Estrato socioeconómico": estrato
+        })
+
     except Exception as e:
         st.error("❌ Error al hacer la predicción:")
         st.code(str(e))
-
