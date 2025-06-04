@@ -60,12 +60,12 @@ if st.button("Realizar predicción"):
                    .str.replace('.', '', regex=False)\
                    .str.strip()
 
-# Aplicar limpieza robusta
-entrada_modelo.columns = normalizar_columnas(entrada_modelo.columns)
-columnas_modelo = normalizar_columnas(columnas_modelo)
+        # Aplicar limpieza robusta
+        entrada_modelo.columns = normalizar_columnas(entrada_modelo.columns)
+        columnas_modelo = normalizar_columnas(columnas_modelo)
 
-# Reordenar columnas
-entrada_modelo = entrada_modelo[columnas_modelo]
+         # Reordenar columnas
+         entrada_modelo = entrada_modelo[columnas_modelo]
 
         # Asegurar que el orden y los nombres coincidan
         entrada_modelo = entrada_modelo[columnas_modelo]
