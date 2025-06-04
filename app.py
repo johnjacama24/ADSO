@@ -18,12 +18,6 @@ modelo, diccionario_inverso = cargar_modelo_y_diccionario()
 # ----------------------------
 df = pd.read_excel("dataframe.xlsx", engine="openpyxl")
 
-# Limpieza de nombres de columnas
-# ----------------------------
-df.columns = df.columns.str.replace(',', '', regex=False)\
-                       .str.replace('.', '', regex=False)\
-                       .str.replace('  ', ' ', regex=False)\
-                       .str.strip()
 # ----------------------------
 # Configuración de la app
 # ----------------------------
@@ -52,28 +46,6 @@ if st.button("Realizar predicción"):
 
         # Convertir en DataFrame con columnas en el orden original
         entrada_modelo = pd.DataFrame([nueva_muestra])[columnas_modelo]
-
-        # Limpieza de nombres de columnas
-        import unicodedata
-        import re
-        def normalizar_columnas(columnas):
-            columnas = columnas.str.normalize('NFKD')  # Elimina acentos compuestos
-            columnas = columnas.str.encode('ascii', 'ignore').str.decode('utf-8')  # Quita tildes y eñes especiales
-            columnas = columnas.str.lower()  # Convierte todo a minúsculas
-            columnas = columnas.str.replace(r'\s+', ' ', regex=True)  # Reemplaza espacios múltiples
-            columnas = columnas.str.replace(r'[^\w\s-]', '', regex=True)  # Quita todo símbolo raro excepto guiones
-            columnas = columnas.str.strip()  # Quita espacios al inicio y final
-            return columnas
-
-        # Aplicar limpieza robusta
-        entrada_modelo.columns = normalizar_columnas(entrada_modelo.columns)
-        columnas_modelo = normalizar_columnas(columnas_modelo)
-
-         # Reordenar columnas
-        entrada_modelo = entrada_modelo[columnas_modelo]
-
-        # Asegurar que el orden y los nombres coincidan
-        entrada_modelo = entrada_modelo[columnas_modelo]
 
         # Realizar la predicción
         prediccion_codificada = modelo.predict(entrada_modelo)[0]
