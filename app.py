@@ -53,6 +53,17 @@ if st.button("Realizar predicción"):
         # Convertir en DataFrame con columnas en el orden original
         entrada_modelo = pd.DataFrame([nueva_muestra])[columnas_modelo]
 
+        # Limpieza de nombres de columnas
+        entrada_modelo.columns = entrada_modelo.columns.str.replace(',', '', regex=False)\
+                                                       .str.replace('.', '', regex=False)\
+                                                       .str.strip()
+        columnas_modelo = columnas_modelo.str.replace(',', '', regex=False)\
+                                         .str.replace('.', '', regex=False)\
+                                         .str.strip()
+
+        # Asegurar que el orden y los nombres coincidan
+        entrada_modelo = entrada_modelo[columnas_modelo]
+
         # Realizar la predicción
         prediccion_codificada = modelo.predict(entrada_modelo)[0]
         prediccion_original = diccionario_inverso.get(prediccion_codificada, f"Desconocido ({prediccion_codificada})")
