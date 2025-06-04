@@ -55,7 +55,7 @@ if st.button("Realizar predicción"):
 
         # Limpieza de nombres de columnas
         def normalizar_columnas(columnas):
-    return columnas.str.replace(r'\s+', ' ', regex=True)\
+            return columnas.str.replace(r'\s+', ' ', regex=True)\
                    .str.replace(',', '', regex=False)\
                    .str.replace('.', '', regex=False)\
                    .str.strip()
