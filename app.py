@@ -54,12 +54,16 @@ if st.button("Realizar predicción"):
         entrada_modelo = pd.DataFrame([nueva_muestra])[columnas_modelo]
 
         # Limpieza de nombres de columnas
+        import unicodedata
+        import re
         def normalizar_columnas(columnas):
-            return columnas.str.replace(r'\s+', ' ', regex=True)\
-                   .str.replace(',', '', regex=False)\
-                   .str.replace('\.$', '', regex=True)\
-                   .str.replace('.', '', regex=False)\
-                   .str.strip()
+            columnas = columnas.str.normalize('NFKD')  # Elimina acentos compuestos
+            columnas = columnas.str.encode('ascii', 'ignore').str.decode('utf-8')  # Quita tildes y eñes especiales
+            columnas = columnas.str.lower()  # Convierte todo a minúsculas
+            columnas = columnas.str.replace(r'\s+', ' ', regex=True)  # Reemplaza espacios múltiples
+            columnas = columnas.str.replace(r'[^\w\s-]', '', regex=True)  # Quita todo símbolo raro excepto guiones
+            columnas = columnas.str.strip()  # Quita espacios al inicio y final
+            return columnas
 
         # Aplicar limpieza robusta
         entrada_modelo.columns = normalizar_columnas(entrada_modelo.columns)
